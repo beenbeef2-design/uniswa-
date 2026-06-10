@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UniSwap | 대학생 중고거래 플랫폼</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Navigation Bar -->
+    <header class="navbar">
+      <div class="nav-brand">
+        <img src="assets/uniswap_logo.png" alt="UniSwap Logo" class="brand-logo" onerror="this.style.display='none'">
+        <span class="brand-text">UniSwap</span>
+        <div class="nav-school-selector">
+          <i data-lucide="map-pin" style="width: 14px; height: 14px; color: var(--secondary); margin-right: 4px;"></i>
+          <select id="school-select">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+      </div>
+
+      <div class="nav-center">
+        <div class="nav-search">
+          <i data-lucide="search"></i>
+          <input type="text" id="nav-search-input" placeholder="학교 안의 다양한 보물들을 검색해보세요...">
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <div class="nav-item active" data-tab="browse">
+          <i data-lucide="layout-grid"></i>
+          <span>둘러보기</span>
+        </div>
+        <div class="nav-item" data-tab="wishlist">
+          <i data-lucide="heart"></i>
+          <span>관심목록</span>
+        </div>
+        <div class="nav-item" data-tab="chat">
+          <i data-lucide="message-square"></i>
+          <span>채팅</span>
+        </div>
+        <div class="nav-item" data-tab="profile">
+          <i data-lucide="user"></i>
+          <span>마이페이지</span>
+        </div>
+        <button class="nav-item nav-sell-btn" id="nav-sell-btn">
+          <i data-lucide="plus" style="color:#fff;"></i>
+          <span>판매하기</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <!-- VIEW: BROWSE / HOME -->
+      <section id="view-browse" class="view-section active">
+        <!-- Hero Banner -->
+        <div class="hero-banner">
+          <div class="hero-text">
+            <h1>캠퍼스 내에서 안전하게,<br><span>스마트한 대학 생활</span>의 시작</h1>
+            <p>메일 인증된 대학생들과 안심하고 교내에서 직거래하세요. 불필요한 배송비 없이 안전한 만남이 기다립니다.</p>
+          </div>
+          <div class="hero-graphic">
+            <div class="hero-glow-circle"></div>
+          </div>
+        </div>
+
+        <!-- Categories Bar -->
+        <div class="categories-container" id="category-container">
+          <!-- Populated via JS -->
+        </div>
+
+        <!-- Filters Row -->
+        <div class="filter-bar">
+          <div class="filter-left">
+            <div class="school-toggle-container" id="school-toggle-btn">
+              <div class="toggle-switch"></div>
+              <span>내 학교 글만 보기</span>
+            </div>
+            <div class="sort-select-container">
+              <select id="sort-select">
+                <option value="newest">최신등록순</option>
+                <option value="price-low">가격낮은순</option>
+                <option value="price-high">가격높은순</option>
+                <option value="popular">인기순</option>
+              </select>
+            </div>
+          </div>
+          <div class="results-count" id="results-count">총 0개 상품</div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="products-grid">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+      <!-- VIEW: WISHLIST -->
+      <section id="view-wishlist" class="view-section">
+        <div style="margin-bottom: 2rem;">
+          <h2 style="font-size: 1.8rem; font-weight: 800; font-family: 'Outfit';">내 관심목록</h2>
+          <p style="color: var(--text-secondary); margin-top: 0.2rem;">하트를 누른 위시리스트 상품 모아보기</p>
+        </div>
+
+        <div class="products-grid" id="wishlist-grid">
+          <!-- Populated via JS -->
+        </div>
+
+        <div class="wishlist-empty-state" id="wishlist-empty" style="display: none;">
+          <i data-lucide="heart" style="width: 4rem; height: 4rem;"></i>
+          <h3>위시리스트가 텅 비었습니다.</h3>
+          <p>마음에 드는 상품의 하트를 눌러 관심 목록에 추가해보세요.</p>
+          <button class="wishlist-empty-btn" id="wishlist-empty-btn">상품 둘러보러 가기</button>
+        </div>
+      </section>
+
+      <!-- VIEW: CHAT -->
+      <section id="view-chat" class="view-section">
+        <div class="chat-container glass">
+          <!-- Chat Sidebar -->
+          <div class="chat-sidebar">
+            <div class="chat-sidebar-header">
+              <h2>메시지함</h2>
+            </div>
+            <div class="chat-rooms-list" id="chat-rooms-list">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- Chat Empty State -->
+          <div class="chat-empty-state" id="chat-empty">
+            <i data-lucide="message-square" style="width: 3.5rem; height: 3.5rem;"></i>
+            <p>채팅방을 선택하시면 대화 내용이 표시됩니다.</p>
+          </div>
+
+          <!-- Chat Window -->
+          <div class="chat-main-window" id="chat-main-window" style="display: none;">
+            <div class="chat-window-header">
+              <div class="chat-partner-info">
+                <span class="chat-partner-name" id="chat-partner-name">컴공새내기</span>
+                <span class="chat-partner-school" id="chat-partner-school">서울대학교</span>
+              </div>
+              <div style="color: var(--text-muted); cursor: pointer;"><i data-lucide="more-vertical"></i></div>
+            </div>
+
+            <!-- Chat Product Mini Bar -->
+            <div class="chat-product-bar" id="chat-product-bar">
+              <img src="" alt="Product Image" class="chat-product-img" id="chat-product-img">
+              <span class="chat-product-title" id="chat-product-title">아이패드 프로 11인치 4세대 M2</span>
+              <span class="chat-product-price" id="chat-product-price">850,000원</span>
+              <i data-lucide="chevron-right" style="width: 16px; height: 16px; color: var(--text-muted);"></i>
+            </div>
+
+            <!-- Chat Log Messages -->
+            <div class="chat-messages-container" id="chat-messages-container">
+              <!-- Populated via JS -->
+            </div>
+
+            <!-- Chat Send Input Form -->
+            <div class="chat-window-footer">
+              <form class="chat-input-form" id="chat-input-form">
+                <input type="text" class="chat-input-field" id="chat-input-field" placeholder="메시지를 입력해 대화를 시작해보세요..." autocomplete="off">
+                <button type="submit" class="chat-send-btn">
+                  <i data-lucide="send" style="width: 18px; height: 18px; color:#fff;"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: SELL / UPLOAD -->
+      <section id="view-sell" class="view-section">
+        <div class="sell-container">
+          <div class="sell-title-row">
+            <h2>중고 물품 판매하기</h2>
+            <p>학교 사람들과 나눌 중고 아이템 정보를 정확히 기입해주세요.</p>
+          </div>
+
+          <form class="sell-form-card glass" id="sell-form">
+            <!-- File Uploader -->
+            <div class="form-group">
+              <label class="form-label">상품 이미지 등록 <span>*</span></label>
+              <div class="file-drag-area" id="file-drag-area">
+                <i data-lucide="image"></i>
+                <p>클릭하여 이미지 파일을 올리거나 드래그 앤 드롭</p>
+                <span>PNG, JPG 이미지 파일만 등록 가능합니다.</span>
+                <input type="file" id="file-input" style="display: none;" accept="image/*">
+              </div>
+              <div class="file-preview-container" id="file-preview-container">
+                <!-- Preview items JS -->
+              </div>
+            </div>
+
+            <!-- Product Title -->
+            <div class="form-group">
+              <label class="form-label" for="sell-title">제목 <span>*</span></label>
+              <input type="text" class="form-input-text" id="sell-title" placeholder="상품 제목을 기입해주세요 (예: 아이패드 11인치)" required>
+            </div>
+
+            <!-- Category / School Selector Grid -->
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="sell-category">카테고리 <span>*</span></label>
+                <select class="form-select" id="sell-category" required>
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="sell-school">판매 거래 대학 <span>*</span></label>
+                <select class="form-select" id="sell-school" required>
+                  <!-- Populated via JS -->
+                </select>
+              </div>
+            </div>
+
+            <!-- Condition -->
+            <div class="form-group">
+              <label class="form-label">상품 상태 등급 <span>*</span></label>
+              <div class="condition-selector">
+                <div class="condition-option active" data-val="S급 (새상품급)">S급 (새상품급)</div>
+                <div class="condition-option" data-val="A급 (사용감 적음)">A급 (사용감 적음)</div>
+                <div class="condition-option" data-val="B급 (사용감 있음)">B급 (사용감 있음)</div>
+              </div>
+            </div>
+
+            <!-- Price -->
+            <div class="form-group">
+              <label class="form-label" for="sell-price">가격 <span>*</span></label>
+              <div class="price-input-container">
+                <input type="number" class="form-input-text" id="sell-price" placeholder="판매 희망 금액을 적어주세요 (숫자만)" required>
+                <span class="price-unit">원</span>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+              <label class="form-label" for="sell-description">상세 설명 <span>*</span></label>
+              <textarea class="form-input-text" id="sell-description" rows="5" placeholder="상품 상태, 구매 시기, 거래 선호 장소(도서관 앞, 정문 등) 정보를 자유롭게 적어주세요." style="resize: none;" required></textarea>
+            </div>
+
+            <button type="submit" class="form-submit-btn">상품 등록 완료하기</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- VIEW: PROFILE / MY PAGE -->
+      <section id="view-profile" class="view-section">
+        <div class="profile-grid">
+          <!-- Profile Left Side Card -->
+          <div class="profile-card glass">
+            <div class="profile-avatar-large">나</div>
+            <h3 class="profile-name">나 (컴공생)</h3>
+            <div class="profile-school-tag">
+              <i data-lucide="badge-check" style="width: 14px; height: 14px; fill: currentColor;"></i>
+              <span>서울대학교 학생인증됨</span>
+            </div>
+            
+            <div class="profile-stats-row">
+              <div class="profile-stat-box">
+                <span class="stat-val" id="profile-items-count">0</span>
+                <span class="stat-label">등록상품</span>
+              </div>
+              <div class="profile-stat-box">
+                <span class="stat-val" id="profile-likes-count">0</span>
+                <span class="stat-label">관심상품</span>
+              </div>
+              <div class="profile-stat-box">
+                <span class="stat-val">4.9</span>
+                <span class="stat-label">거래온도</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Profile Right Side Content -->
+          <div class="profile-main">
+            <div class="profile-tabs">
+              <div class="profile-tab active">내가 등록한 상품</div>
+            </div>
+            <div class="products-grid" id="profile-listed-grid">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Product Detail Modal Overlay -->
+    <div class="detail-modal" id="detail-modal">
+      <div class="modal-card glass">
+        <!-- Close Button -->
+        <button class="modal-close-btn" id="modal-close-btn">
+          <i data-lucide="x" style="width: 18px; height: 18px; color: #fff;"></i>
+        </button>
+
+        <!-- Left Column: Photo -->
+        <div class="modal-left">
+          <img src="" alt="Product Photo" id="modal-img">
+        </div>
+
+        <!-- Right Column: Info & Actions -->
+        <div class="modal-right">
+          <div class="modal-header">
+            <div class="modal-meta-row">
+              <span class="modal-school-badge" id="modal-school-badge">서울대학교</span>
+              <span class="modal-category-badge" id="modal-category-badge">도서/학습</span>
+            </div>
+            <h2 class="modal-title" id="modal-title">맨큐의 경제학 9판 번역서 깨끗합니다.</h2>
+          </div>
+
+          <div class="modal-price-row">
+            <span class="modal-price" id="modal-price">25,000원</span>
+            <span class="modal-condition" id="modal-condition">A급 (사용감 적음)</span>
+          </div>
+
+          <!-- Seller Info Card -->
+          <div class="modal-seller-card">
+            <div class="seller-profile-info">
+              <div class="seller-avatar" id="modal-seller-avatar">호</div>
+              <div>
+                <span class="seller-name" id="modal-seller-name">호랑이교양맨</span>
+                <div class="seller-verified-tag">
+                  <i data-lucide="badge-check" style="width: 12px; height: 12px; fill: currentColor;"></i>
+                  대학생 인증완료
+                </div>
+              </div>
+            </div>
+            <div class="seller-rating" id="modal-seller-rating">★ 4.8</div>
+          </div>
+
+          <!-- Product description text -->
+          <div class="modal-description" id="modal-description">
+            설명 텍스트가 여기에 기입됩니다.
+          </div>
+
+          <!-- Action buttons footer -->
+          <div class="modal-actions">
+            <button class="modal-like-btn" id="modal-like-btn">
+              <i data-lucide="heart" style="width: 20px; height: 20px;"></i>
+            </button>
+            <button class="modal-chat-btn" id="modal-chat-btn">
+              <i data-lucide="message-square" style="width: 18px; height: 18px;"></i>
+              <span>판매자와 채팅하기</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Lucide Icon Import -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Data Import -->
+  <script src="mockData.js"></script>
+  <!-- Application Main Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
